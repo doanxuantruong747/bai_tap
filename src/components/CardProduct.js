@@ -8,14 +8,16 @@ const CardProduct = ({ product }) => {
 
     const [quantity, setQuantity] = useState();
 
-    const { litsProducts } = useSelector((state) => state.myCartReducer.myCart)
+    const { listProducts } = useSelector((state) =>
+        state.myCartReducer.myCart)
 
     useEffect(() => {
-        const index = litsProducts?.findIndex(
+        const index = listProducts?.findIndex(
             (element) => element.id === product.id
         );
-        if (index > -1) setQuantity(litsProducts[index]?.quantity);
-    }, [litsProducts]);
+        if (index > -1)
+            setQuantity(listProducts[index]?.quantity);
+    }, [listProducts]);
 
     const onFinish = (values) => {
 

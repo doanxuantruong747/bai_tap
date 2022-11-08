@@ -2,7 +2,13 @@ import * as Actions from "./actionsOrder";
 
 const initialSate = {
     order: [
-        { id: 1, name: null, totalBeforeTax: null, sumTax: null, total: null },
+        {
+            // id: null,
+            // name: 'User name',
+            // totalBeforeTax: 'null',
+            // sumTax: 'null',
+            // total: 'null'
+        },
     ]
 }
 
@@ -12,7 +18,7 @@ const orderReducer = (state = initialSate, action) => {
         case Actions.SAVE_ORDER: {
             const { data = {} } = action;
             const { response } = data;
-
+            console.log(response);
             return {
                 ...state,
                 order: response

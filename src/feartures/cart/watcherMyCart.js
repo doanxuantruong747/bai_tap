@@ -23,14 +23,14 @@ function* workerAddToCart(action) {
     if (index > -1) {
         response[index].quantity += product.quantity;
     }
-    if (index < 0) {
+    if (index <= 0) {
         response.unshift(product);
     }
 
-    let newSum = 0;
-    let newSumTax = 0;
-    let newTotalBeforeTax = 0;
-    let newQuantity = 0;
+    let newSum = 0,
+        newSumTax = 0,
+        newTotalBeforeTax = 0,
+        newQuantity = 0;
 
     listProducts.forEach(({ price, tax, quantity }) => {
         newSum += (price + tax) * quantity;
@@ -44,7 +44,7 @@ function* workerAddToCart(action) {
         sum: newSum,
         tax: newSumTax,
         totalBeforeTax: newTotalBeforeTax,
-        sumQuantity: newQuantity
+        sumQuantity: newQuantity,
     }
 
     yield put({
@@ -53,6 +53,5 @@ function* workerAddToCart(action) {
             newMyCart: newMyCart
         }
     })
-
 
 }

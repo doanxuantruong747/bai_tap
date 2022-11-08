@@ -1,23 +1,26 @@
-import { Typography, Space, Button } from "antd";
-import React, { useEffect } from "react";
+import { Typography, Button } from "antd";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TableCart from "./TableCart";
-import * as Actions from "./actionsMyCart";
+
 import * as ActionsOrder from "../order/actionsOrder";
 
 const MyCart = () => {
     const { Title } = Typography;
-
-    const dispatch = useDispatch();
-
     const { myCart } = useSelector((state) => state.myCartReducer)
     const { listProducts } = myCart
+
+    const [DSProduct, setDSProduct] = useState(listProducts)
+
+    const dispatch = useDispatch();
 
     const handleOder = () => {
         dispatch({
             type: ActionsOrder.ORDER_PAYMENT,
             data: { myCart: myCart },
-        })
+        },
+            setDSProduct([])
+        )
     };
 
     return (
@@ -26,8 +29,8 @@ const MyCart = () => {
                 <Title>Cart</Title>
             </Typography>
 
-            <TableCart listProducts={listProducts} />
-            <div style={{ textAlign: "right", marginTop: "10px" }}>
+            <TableCart DSProduct={DSProduct} />
+            <div style={{ textAlign: "right", marginTop: "10px", marginRight: "20px" }}>
                 <Button
                     style={{
                         height: "50px", width: "200px",

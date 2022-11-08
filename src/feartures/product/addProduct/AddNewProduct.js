@@ -11,19 +11,20 @@ const AddNewProduct = () => {
     const dispatch = useDispatch();
 
     const onFinish = (values) => {
-
-
+        const _id = Math.floor(Math.random() * 1000);
+        const product = { ...values, id: _id }
         dispatch({
             type: Actions.ADD_NEW_PRODUCT,
             data: {
-                product: values,
+                product: product,
             },
-        });
+        },
+        );
     };
     const onFinishFailed = (errorInfo) => {
         console.log('Add Error:', errorInfo);
     };
-    let _id = Math.floor(Math.random() * 1000);
+
 
     return (
         <>
@@ -51,9 +52,9 @@ const AddNewProduct = () => {
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"
             >
-                {/* <Form.Item name={_id}>
+                <Form.Item name='id'>
                     <Input hidden />
-                </Form.Item> */}
+                </Form.Item>
 
                 <Form.Item
                     label="Name"

@@ -2,14 +2,28 @@ import * as Actions from "./actionsOrder";
 
 const initialSate = {
     rowOrder: [
-        { idProduct: 1, quantity: 1, price: null, totalBeforeTax: null, sumTax: null },
-    ]
+        {
+            idOrder: null,
+            idProduct: null,
+            quantity: null,
+            price: null,
+            totalBeforeTax: null,
+            sumTax: null
+        },
+
+    ],
 }
 
 const rowOderReducer = (state = initialSate, action) => {
     switch (action.type) {
-        case Actions.LIST_ROW_ORDER: {
-            return state;
+        case Actions.SAVE_ROW_ORDER: {
+            const { data = {} } = action;
+            const { response } = data;
+            console.log(response);
+            return {
+                ...state,
+                order: response
+            }
         }
         default:
             return state;

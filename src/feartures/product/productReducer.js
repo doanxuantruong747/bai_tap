@@ -49,9 +49,7 @@ const productReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
 
         case GET_LIST_PRODUCT:
-            return {
-                ...state,
-            };
+            return state;
 
         case ADD_NEW_PRODUCT:
             const { data = {} } = action;

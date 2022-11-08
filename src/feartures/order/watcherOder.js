@@ -1,89 +1,70 @@
-import { takeLatest, select, put, take } from "redux-saga/effects";
+import { takeLatest, select, put, take, takeEvery } from "redux-saga/effects";
 
 import * as Actions from "./actionsOrder";
 import * as ActionsCart from "../cart/actionsMyCart";
 
 export function* watcherOder() {
     yield takeLatest(Actions.ORDER_PAYMENT, workerOrderPayment);
-    yield takeLatest(Actions.SAVE_ORDER_PROCESS, workerSaveOrderProcess);
 
 }
 
-function* workerOrderPayment(action) {
-    try {
 
-        const { data = {} } = action;
-        const { myCart } = data;
-        const { total, totalBeforeTax, sumTax } = myCart;
+function* workerOrderPayment(action) {
+
+    try {
+        let newSumBeforeTax = 0;
+        let newSumTax = 0;
+        let newTotal = 0;
 
         const order = yield select(state => state.orderReducer.order);
+        const myCart = yield select(state => state.myCartReducer.myCart);
 
+        myCart.listProducts.forEach((product) => {
+            newSumBeforeTax += product.price;
+            newSumTax += (product.tax * product.quantity);
+            newTotal = (newSumBeforeTax + newSumTax)
+        });
+
+        let _id = Math.floor(Math.random() * 1000);
         const newOrder = {
-            id: null,
-            name: "",
-            totalBeforeTax: totalBeforeTax,
-            sumTax: sumTax,
-            total: total
+            id: _id,
+            name: `userName` + _id,
+            totalBeforeTax: newSumBeforeTax,
+            sumTax: newSumTax,
+            total: newTotal
         }
 
         let response = [newOrder, ...order];
-        console.log(response);
+
         yield put({
             type: Actions.SAVE_ORDER,
             data: {
-                order: response
+                response: response
             }
         })
 
-        yield put({
-            type: Actions.SAVE_ORDER_PROCESS
-        })
-        let res = yield take(Actions.SAVE_ORDER_SUCCESS);
-        const { isEqual } = res.data;
-
-        yield put({
-            type: Actions.SAVE_ROW_ORDER,
-            data: {
-                newOder: [...myCart.listProducts]
-            }
-        })
-
-        yield take(Actions.SAVE_ROW_ORDER_SUCCESS);
+        // handle row order
 
 
-        if (!isEqual) {
-            yield put({
-                type: ActionsCart.ADD_ITEM_TO_CART,
-                data: {
-                    newMyCart: {
-                        listProducts: [
-                        ],
-                        sum: 0,
-                        tax: 0,
-                        totalBeforeTax: 0,
-                        sumQuantity: 0
-                    }
-                }
-            })
+        // delele item my in my cart
+        let newMyCart = {
+            listProducts: [
+            ],
+            sum: null,
+            tax: null,
+            totalBeforeTax: null,
+            sumQuantity: null
         }
-
-    } catch (error) { }
-}
-
-function* workerSaveOrderProcess(action) {
-    try {
-
-        const { data = {} } = action;
-        const { prevOder } = data;
-        const order = yield select(state => state.rowOderReducer.order);
-        const isEqual = JSON.stringify(prevOder) === JSON.stringify(order);
-        console.log(order);
         yield put({
-            type: Actions.SAVE_ORDER_SUCCESS,
+            type: ActionsCart.ADD_ITEM_TO_CART,
             data: {
-                isEqual: isEqual
+                newMyCart: newMyCart
             }
         })
+
+
+
     } catch (error) { }
 }
+
 

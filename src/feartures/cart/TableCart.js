@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography, Table, Image } from "antd";
 
-const TableCart = ({ listProducts }) => {
+const TableCart = ({ DSProduct }) => {
     const { Title } = Typography;
 
     const columns = [
@@ -28,11 +28,6 @@ const TableCart = ({ listProducts }) => {
             render: (quantity) => quantity,
         },
         {
-            title: "Sum Tax",
-            dataIndex: "tax",
-            key: "tax",
-        },
-        {
             title: "Total Before Tax",
             render: (_, data) => data.price * data.quantity,
         },
@@ -50,7 +45,7 @@ const TableCart = ({ listProducts }) => {
         <div>
             <Table
                 columns={columns}
-                dataSource={listProducts}
+                dataSource={DSProduct}
                 pagination={false}
                 rowKey={(record) => record.id}
                 summary={(pageData) => {
@@ -61,7 +56,7 @@ const TableCart = ({ listProducts }) => {
 
                     return (
                         <Table.Summary.Row>
-                            <Table.Summary.Cell index={0} colSpan={7} align="right">
+                            <Table.Summary.Cell index={0} colSpan={6} align="right">
                                 <Title level={3}>Total:</Title>
                             </Table.Summary.Cell>
                             <Table.Summary.Cell index={1} colSpan={1}>

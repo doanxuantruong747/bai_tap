@@ -1,4 +1,4 @@
-import { delay, takeEvery, takeLatest, takeLeading, select, put, take, all, fork, spawn, call } from "redux-saga/effects";
+import { takeLeading, select, put } from "redux-saga/effects";
 
 import * as Actions from "./actionsOrder";
 
@@ -9,18 +9,16 @@ export function* watcherRowOder() {
 
 function* workerSaverOrderProcess(action) {
     try {
-        console.log("in worker save dong don hang process");
-        yield put({
-            type: Actions.SAVE_ROW_ORDER_SUCCESS
-        })
+        yield
+        console.log('test');
     } catch (error) { }
 }
 
 function* workerSaveRowOder(action) {
     try {
-        const { data = {} } = action;
-        const { newRowOrder } = data;
+
         const { rowOrder } = yield select(state => state.rowOrderReduct);
+        console.log(rowOrder);
 
     } catch (error) { }
 }
