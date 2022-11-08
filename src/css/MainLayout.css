@@ -1,0 +1,7 @@
+.mainLayout {
+    min-height: 100vh;
+    color: black;
+    /* display: flex;
+    flex-direction: column;
+    justify-content: space-between; */
+}
